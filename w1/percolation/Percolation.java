@@ -11,7 +11,7 @@ public class Percolation {
     private int len;
     private int top;
     private int bottom;
-    private int num_open = 0;
+    private int numOpen = 0;
 
     // creates n-by-n grid, with all sites initially blocked
     public Percolation(int n) {
@@ -30,55 +30,58 @@ public class Percolation {
         top = 0;
         bottom = n * n + 1;
 
-        // connect all points in the first row to the top
-        for (int i = 0; i < n; i++)
-            uf.union(top, i + 1);
-        // connect all points in the second row to the bottom
-        for (int i = 0; i < n; i++)
-            uf.union(bottom, n * n - i);
     }
 
     // opens the site (row, col) if it is not open already
     public void open(int row, int col) {
         // check validity
-        if (row < 1 || row > len || col < 1 || col > len) throw new IndexOutOfBoundsException();
+        if (row < 1 || row > len || col < 1 || col > len) throw new IllegalArgumentException();
         // open the site
         grid[row - 1][col - 1] = true;
         // add open count
-        num_open++;
+        numOpen++;
 
         // union it with its neighbors
-        int i = (row - 1) * len + (col - 1);
+        int i = (row - 1) * len + col;
         // left neighbor
         if (col - 1 > 0 && grid[row - 1][col - 2]) uf.union(i, i - 1);
         // right neighbor
         if (col - 1 < len - 1 && grid[row - 1][col]) uf.union(i, i + 1);
         // top neighbor
-        if (row - 1 > 0 && grid[row - 2][col - 1]) uf.union(i, i - len);
+        if (row == 1) {
+            uf.union(i, top);
+        }
+        else if (grid[row - 2][col - 1]) {
+            uf.union(i, i - len);
+        }
         // bottom neighbor
-        if (row - 1 < len - 1 && grid[row][col - 1]) uf.union(i, i + len);
+        if (row == len) {
+            uf.union(i, bottom);
+        }
+        else if (grid[row][col - 1]) {
+            uf.union(i, i + len);
+        }
     }
 
     // is the site (row, col) open?
     public boolean isOpen(int row, int col) {
         // check validity
-        if (row < 1 || row > len || col < 1 || col > len) throw new IndexOutOfBoundsException();
+        if (row < 1 || row > len || col < 1 || col > len) throw new IllegalArgumentException();
         return grid[row - 1][col - 1];
     }
 
     // is the site (row, col) full?
     public boolean isFull(int row, int col) {
         // check validity
-        if (row < 1 || row > len || col < 1 || col > len) throw new IndexOutOfBoundsException();
+        if (row < 1 || row > len || col < 1 || col > len) throw new IllegalArgumentException();
 
-        int i = (row - 1) * len + (col - 1);
-        if (uf.connected(i, top)) return true;
-        return false;
+        int i = (row - 1) * len + col;
+        return uf.connected(i, top);
     }
 
     // returns the number of open sites
     public int numberOfOpenSites() {
-        return num_open;
+        return numOpen;
     }
 
     // does the system percolate?

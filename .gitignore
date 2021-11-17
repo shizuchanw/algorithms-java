@@ -2,3 +2,13 @@
 .DS_Store
 w1/hello/HelloGoodbye.java
 w1/hello/HelloWorld.java
+*.xml
+*.old
+*.jar
+w2/queues/.idea/fileTemplates/internal/package-info.java
+w2/queues/.idea/fileTemplates/internal/module-info.java
+w2/queues/.idea/fileTemplates/internal/Interface.java
+w2/queues/.idea/fileTemplates/internal/Enum.java
+w2/queues/.idea/fileTemplates/internal/Class.java
+w2/queues/.idea/fileTemplates/internal/AnnotationType.java
+w2/queues/.idea/fileTemplates/includes/File Header.java
